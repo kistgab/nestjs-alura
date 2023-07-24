@@ -3,7 +3,11 @@ import { UserRepository } from './user.repository';
 
 @Controller('/users')
 export class UserController {
-  private userRepository = new UserRepository();
+  private userRepository: UserRepository;
+
+  constructor(userRepository: UserRepository) {
+    this.userRepository = userRepository;
+  }
 
   @Post()
   async create(@Body() requestBody) {
