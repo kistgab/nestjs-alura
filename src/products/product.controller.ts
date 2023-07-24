@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
+import { CreateProductDTO } from './dto/createProduct.dto';
 
 @Controller('/products')
 export class ProductController {
@@ -10,7 +11,7 @@ export class ProductController {
   }
 
   @Post()
-  async create(@Body() requestBody) {
+  async create(@Body() requestBody: CreateProductDTO) {
     await this.productRepository.save(requestBody);
     return requestBody;
   }
