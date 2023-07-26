@@ -13,8 +13,38 @@ export class UserRepository {
     return this.users;
   }
 
+  async update(
+    id: string,
+    dataToUpdate: Partial<UserEntity>,
+  ): Promise<UserEntity> {
+    const user = await this.findById(id);
+
+    Object.entries(dataToUpdate).forEach(([chave, valor]) => {
+      if (chave === 'id') {
+        return;
+      }
+      user[chave] = valor;
+    });
+
+    return user;
+  }
+
+  async delete(id: string) {
+    const foundUser = await this.findById(id);
+    this.users = this.users.filter((user) => user.id !== foundUser.id);
+    return foundUser;
+  }
+
   async existsByEmail(email: string): Promise<boolean> {
     const isEmailAlreadyUsed = this.users.some((user) => user.email === email);
     return isEmailAlreadyUsed;
+  }
+
+  private async findById(id: string) {
+    const foundUser = this.users.find((user) => user.id === id);
+    if (!foundUser) {
+      throw new Error('Usuário não existe');
+    }
+    return foundUser;
   }
 }
