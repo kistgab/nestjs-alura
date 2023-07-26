@@ -3,6 +3,7 @@ import { UserRepository } from './user.repository';
 import { CreateUserDTO } from './dto/createUser.dto';
 import { UserEntity } from './user.entity';
 import { v4 as uuid } from 'uuid';
+import { ListUserDTO } from './dto/listUser.dto';
 
 @Controller('/users')
 export class UserController {
@@ -22,13 +23,17 @@ export class UserController {
 
     await this.userRepository.save(user);
     return {
-      id: user.id,
+      user: new ListUserDTO(user.id, user.name),
       message: 'Usuário criado com sucesso',
     };
   }
 
   @Get()
-  async listAll(): Promise<any[]> {
-    return await this.userRepository.listAll();
+  async listAll(): Promise<ListUserDTO[]> {
+    const users = await this.userRepository.listAll();
+    const userDtoList = users.map(
+      (user) => new ListUserDTO(user.id, user.name),
+    );
+    return userDtoList;
   }
 }
