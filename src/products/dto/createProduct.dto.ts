@@ -1,10 +1,11 @@
 import {
   ArrayMinSize,
   ArrayNotEmpty,
-  IsArray,
   IsDateString,
   IsNotEmpty,
   IsNumber,
+  IsString,
+  IsUUID,
   MaxLength,
   Min,
   ValidateNested,
@@ -14,18 +15,23 @@ import { ProductImageDTO } from './image.dto';
 import { Type } from 'class-transformer';
 
 export class CreateProductDTO {
-  @IsNotEmpty()
+  @IsUUID(undefined, { message: 'ID de usuário inválido' })
+  userId: number;
+
+  @IsNotEmpty({ message: 'O nome do produto não pode ser vazio' })
   name: string;
 
-  @Min(0)
+  @Min(1, { message: 'O valor precisa ser maior que zero' })
   @IsNumber({ maxDecimalPlaces: 2 })
   price: number;
 
-  @Min(0)
+  @Min(0, { message: 'Quantidade mínima inválida' })
   disponibleQuantity: 10;
 
-  @IsNotEmpty()
-  @MaxLength(1000)
+  @IsNotEmpty({ message: 'Descrição do produto não pode ser vazia' })
+  @MaxLength(1000, {
+    message: 'Descrição não pode ter mais que 1000 caracteres',
+  })
   description: string;
 
   @ArrayMinSize(3)
@@ -38,12 +44,6 @@ export class CreateProductDTO {
   @Type(() => ProductImageDTO)
   images: ProductImageDTO[];
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Categoria do produto não pode ser vazia' })
   category: string;
-
-  @IsDateString()
-  createdAt: Date;
-
-  @IsDateString()
-  updatedAt: Date;
 }
