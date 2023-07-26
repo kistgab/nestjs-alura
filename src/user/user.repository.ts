@@ -19,11 +19,11 @@ export class UserRepository {
   ): Promise<UserEntity> {
     const user = await this.findById(id);
 
-    Object.entries(dataToUpdate).forEach(([chave, valor]) => {
-      if (chave === 'id') {
+    Object.entries(dataToUpdate).forEach(([propertyName, propertyValue]) => {
+      if (propertyName === 'id') {
         return;
       }
-      user[chave] = valor;
+      user[propertyName] = propertyValue;
     });
 
     return user;
