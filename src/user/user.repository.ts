@@ -29,7 +29,7 @@ export class UserRepository {
     return user;
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<UserEntity> {
     const foundUser = await this.findById(id);
     this.users = this.users.filter((user) => user.id !== foundUser.id);
     return foundUser;
@@ -40,7 +40,7 @@ export class UserRepository {
     return isEmailAlreadyUsed;
   }
 
-  private async findById(id: string) {
+  private async findById(id: string): Promise<UserEntity> {
     const foundUser = this.users.find((user) => user.id === id);
     if (!foundUser) {
       throw new Error('Usuário não existe');
