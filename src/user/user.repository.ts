@@ -9,7 +9,7 @@ export class UserRepository {
     this.users.push(user);
   }
 
-  async listAll() {
+  async listAll(): Promise<UserEntity[]> {
     return this.users;
   }
 
