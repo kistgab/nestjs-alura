@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
-import { ProductsModule } from './products/product.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './config/postgres.config.service';
+import { ProductsModule } from './product/product.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
