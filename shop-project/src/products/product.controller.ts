@@ -28,13 +28,13 @@ export class ProductController {
     const newProduct = new ProductEntity();
     newProduct.id = uuid();
     newProduct.category = requestBody.category;
-    newProduct.characteristics = requestBody.characteristics;
     newProduct.description = requestBody.description;
     newProduct.disponibleQuantity = requestBody.disponibleQuantity;
-    newProduct.images = requestBody.images;
     newProduct.name = requestBody.name;
     newProduct.price = requestBody.price;
     newProduct.userId = requestBody.userId;
+    // newProduct.characteristics = requestBody.characteristics;
+    // newProduct.images = requestBody.images;
     await this.productRepository.save(newProduct);
     return {
       product: new ListProductDTO(newProduct.id, newProduct.name),

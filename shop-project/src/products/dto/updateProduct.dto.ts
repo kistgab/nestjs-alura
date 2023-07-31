@@ -16,7 +16,7 @@ import { Type } from 'class-transformer';
 export class UpdateProductDTO {
   @IsOptional()
   @IsUUID(undefined, { message: 'ID de usuário inválido' })
-  userId: number;
+  userId: string;
 
   @IsOptional()
   @IsNotEmpty({ message: 'O nome do produto não pode ser vazio' })

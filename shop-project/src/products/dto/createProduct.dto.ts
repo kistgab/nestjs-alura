@@ -14,7 +14,7 @@ import { Type } from 'class-transformer';
 
 export class CreateProductDTO {
   @IsUUID(undefined, { message: 'ID de usuário inválido' })
-  userId: number;
+  userId: string;
 
   @IsNotEmpty({ message: 'O nome do produto não pode ser vazio' })
   name: string;

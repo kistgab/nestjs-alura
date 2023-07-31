@@ -24,9 +24,9 @@ export class UserEntity {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;
 
-  @UpdateDateColumn({ name: 'created_at' })
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: string;
 
-  @DeleteDateColumn({ name: 'created_at' })
+  @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: string;
 }
