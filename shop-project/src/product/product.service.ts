@@ -2,9 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { UserService } from '../user/user.service';
 import { CreateProductDTO } from './dto/createProduct.dto';
 import { ListProductDTO } from './dto/listProduct.dto';
 import { UpdateProductDTO } from './dto/updateProduct.dto';
+import { ProductCharacteristicEntity } from './product-characteristic.entity';
+import { ProductImageEntity } from './product-image.entity';
 import { ProductEntity } from './product.entity';
 
 @Injectable()
@@ -12,6 +15,7 @@ export class ProductService {
   constructor(
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
+    private readonly userService: UserService,
   ) {}
 
   private async findByIdElseThrow(id: string): Promise<ProductEntity> {
@@ -40,9 +44,29 @@ export class ProductService {
     newProduct.disponibleQuantity = requestBody.disponibleQuantity;
     newProduct.name = requestBody.name;
     newProduct.price = requestBody.price;
-    newProduct.userId = requestBody.userId;
-    // newProduct.characteristics = requestBody.characteristics;
-    // newProduct.images = requestBody.images;
+    newProduct.user = await this.userService.findByIdElseThrow(
+      requestBody.userId,
+    );
+
+    const newProductCharacteristics = requestBody.characteristics.map(
+      (characteristic) => {
+        const newCharacteristic = new ProductCharacteristicEntity();
+        newCharacteristic.description = characteristic.description;
+        newCharacteristic.name = characteristic.name;
+        newCharacteristic.product = newProduct;
+        return newCharacteristic;
+      },
+    );
+    const newProductImages = requestBody.images.map((image) => {
+      const newImage = new ProductImageEntity();
+      newImage.description = image.description;
+      newImage.url = image.url;
+      newImage.product = newProduct;
+      return newImage;
+    });
+
+    newProduct.images = newProductImages;
+    newProduct.characteristics = newProductCharacteristics;
     await this.productRepository.save(newProduct);
     return {
       product: new ListProductDTO(newProduct.id, newProduct.name),
@@ -52,15 +76,17 @@ export class ProductService {
 
   async update(id: string, dataToUpdate: UpdateProductDTO) {
     const product = await this.findByIdElseThrow(id);
+
     Object.entries(dataToUpdate).forEach(([propertyName, propertyValue]) => {
       if (propertyName === 'id') {
         return;
       }
       product[propertyName] = propertyValue;
     });
-    await this.productRepository.update(id, product);
+    await this.productRepository.save(product);
+    const productDTO = new ListProductDTO(product.id, product.name);
     return {
-      product: product,
+      product: productDTO,
       message: 'Produto criado com sucesso!',
     };
   }

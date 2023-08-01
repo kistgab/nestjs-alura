@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ProductEntity } from '../product/product.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -29,4 +31,10 @@ export class UserEntity {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: string;
+
+  @OneToMany(() => ProductEntity, (productEntity) => productEntity.user, {
+    cascade: true,
+    eager: true,
+  })
+  products: ProductEntity[];
 }

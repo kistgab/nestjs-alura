@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { v4 as uuid } from 'uuid';
 import { CreateUserDTO } from './dto/createUser.dto';
 import { ListUserDTO } from './dto/listUser.dto';
 import { UpdateUserDTO } from './dto/updateUser.dto';
@@ -13,6 +12,23 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
+
+  async findByIdElseThrow(id: string): Promise<UserEntity> {
+    const foundUser = await this.userRepository.findOne({
+      where: { id },
+    });
+    if (!foundUser) {
+      throw new Error('Usuário com este ID não encontrado!');
+    }
+    return foundUser;
+  }
+
+  async existsByEmail(email: string): Promise<boolean> {
+    const isEmailAlreadyUsed = await this.userRepository.exist({
+      where: { email },
+    });
+    return isEmailAlreadyUsed;
+  }
 
   async listAll() {
     const allUsers = await this.userRepository.find();
@@ -27,7 +43,6 @@ export class UserService {
     user.email = request.email;
     user.password = request.password;
     user.name = request.name;
-    user.id = uuid();
     await this.userRepository.save(user);
     return {
       user: new ListUserDTO(user.id, user.name),
@@ -36,7 +51,7 @@ export class UserService {
   }
 
   async update(id: string, newUser: UpdateUserDTO) {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.findByIdElseThrow(id);
     Object.entries(newUser).forEach(([propertyName, propertyValue]) => {
       if (propertyName === 'id') {
         return;
@@ -45,7 +60,7 @@ export class UserService {
         user[propertyName] = propertyValue;
       }
     });
-    await this.userRepository.update(id, user);
+    await this.userRepository.save(user);
     return {
       user: user,
       message: 'Usuário atualizado com sucesso!',
@@ -53,19 +68,12 @@ export class UserService {
   }
 
   async delete(id: string) {
-    const deletedUser = await this.userRepository.findOne({ where: { id } });
+    const deletedUser = await this.findByIdElseThrow(id);
     await this.userRepository.delete(id);
 
     return {
       user: deletedUser,
       message: 'Usuário removido com sucesso!',
     };
-  }
-
-  async existsByEmail(email: string): Promise<boolean> {
-    const isEmailAlreadyUsed = await this.userRepository.exist({
-      where: { email },
-    });
-    return isEmailAlreadyUsed;
   }
 }

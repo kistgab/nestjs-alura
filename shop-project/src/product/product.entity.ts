@@ -3,17 +3,26 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserEntity } from '../user/user.entity';
+import { ProductCharacteristicEntity } from './product-characteristic.entity';
+import { ProductImageEntity } from './product-image.entity';
 
 @Entity({ name: 'products' })
 export class ProductEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'user_id', length: 100, nullable: false })
-  userId: string;
+  @ManyToOne(() => UserEntity, (userEntity) => userEntity.products, {
+    orphanedRowAction: 'delete',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  user: UserEntity;
 
   @Column({ name: 'name', length: 100, nullable: false })
   name: string;
@@ -27,10 +36,22 @@ export class ProductEntity {
   @Column({ name: 'description', length: 255, nullable: false })
   description: string;
 
-  // characteristics: ProductCharacteristicDTO[];
-  // images: ProductImageDTO[];
   @Column({ name: 'category', length: 100, nullable: false })
   category: string;
+
+  @OneToMany(
+    () => ProductCharacteristicEntity,
+    (productCharacteristicEntity) => productCharacteristicEntity.product,
+    { cascade: true, eager: true },
+  )
+  characteristics: ProductCharacteristicEntity[];
+
+  @OneToMany(
+    () => ProductImageEntity,
+    (productImageEntity) => productImageEntity.product,
+    { cascade: true, eager: true },
+  )
+  images: ProductImageEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;
