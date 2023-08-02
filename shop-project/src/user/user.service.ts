@@ -44,10 +44,7 @@ export class UserService {
     user.password = request.password;
     user.name = request.name;
     await this.userRepository.save(user);
-    return {
-      user: new ListUserDTO(user.id, user.name),
-      message: 'Usuário criado com sucesso!',
-    };
+    return new ListUserDTO(user.id, user.name);
   }
 
   async update(id: string, newUser: UpdateUserDTO) {
@@ -60,20 +57,12 @@ export class UserService {
         user[propertyName] = propertyValue;
       }
     });
-    await this.userRepository.save(user);
-    return {
-      user: user,
-      message: 'Usuário atualizado com sucesso!',
-    };
+    return await this.userRepository.save(user);
   }
 
   async delete(id: string) {
     const deletedUser = await this.findByIdElseThrow(id);
     await this.userRepository.delete(id);
-
-    return {
-      user: deletedUser,
-      message: 'Usuário removido com sucesso!',
-    };
+    return deletedUser;
   }
 }

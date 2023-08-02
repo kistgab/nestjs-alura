@@ -23,16 +23,26 @@ export class ProductController {
 
   @Get()
   async listAll(): Promise<ListProductDTO[]> {
-    return this.productService.listAll();
+    const allProducts = await this.productService.listAll();
+    return allProducts;
   }
 
   @Put('/:id')
   async update(@Param('id') id: string, @Body() requestBody: UpdateProductDTO) {
-    return this.productService.update(id, requestBody);
+    const updatedProduct = await this.productService.update(id, requestBody);
+    return {
+      product: updatedProduct,
+      message: 'Produto criado com sucesso!',
+    };
   }
 
   @Delete('/:id')
   async delete(@Param('id') id: string) {
-    return this.productService.delete(id);
+    const deletedProduct = await this.productService.delete(id);
+
+    return {
+      product: deletedProduct,
+      message: 'Produto removido com sucesso!',
+    };
   }
 }

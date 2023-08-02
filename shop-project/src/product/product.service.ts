@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { v4 as uuid } from 'uuid';
 import { UserService } from '../user/user.service';
 import { CreateProductDTO } from './dto/createProduct.dto';
 import { ListProductDTO } from './dto/listProduct.dto';
@@ -38,7 +37,6 @@ export class ProductService {
 
   async create(requestBody: CreateProductDTO) {
     const newProduct = new ProductEntity();
-    newProduct.id = uuid();
     newProduct.category = requestBody.category;
     newProduct.description = requestBody.description;
     newProduct.disponibleQuantity = requestBody.disponibleQuantity;
@@ -74,7 +72,10 @@ export class ProductService {
     };
   }
 
-  async update(id: string, dataToUpdate: UpdateProductDTO) {
+  async update(
+    id: string,
+    dataToUpdate: UpdateProductDTO,
+  ): Promise<ListProductDTO> {
     const product = await this.findByIdElseThrow(id);
 
     Object.entries(dataToUpdate).forEach(([propertyName, propertyValue]) => {
@@ -85,18 +86,12 @@ export class ProductService {
     });
     await this.productRepository.save(product);
     const productDTO = new ListProductDTO(product.id, product.name);
-    return {
-      product: productDTO,
-      message: 'Produto criado com sucesso!',
-    };
+    return productDTO;
   }
 
   async delete(id: string) {
     const productToDelete = await this.findByIdElseThrow(id);
     await this.productRepository.delete(id);
-    return {
-      product: productToDelete,
-      message: 'Produto removido com sucesso!',
-    };
+    return productToDelete;
   }
 }

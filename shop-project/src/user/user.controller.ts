@@ -18,21 +18,34 @@ export class UserController {
 
   @Post()
   async create(@Body() requestBody: CreateUserDTO) {
-    return await this.userService.create(requestBody);
+    const createdUser = await this.userService.create(requestBody);
+    return {
+      user: createdUser,
+      message: 'Usuário criado com sucesso!',
+    };
   }
 
   @Get()
   async listAll(): Promise<ListUserDTO[]> {
-    return await this.userService.listAll();
+    const allUsers = await this.userService.listAll();
+    return allUsers;
   }
 
   @Put('/:id')
   async update(@Param('id') id: string, @Body() requestBody: UpdateUserDTO) {
-    return await this.userService.update(id, requestBody);
+    const updatedUser = await this.userService.update(id, requestBody);
+    return {
+      user: updatedUser,
+      message: 'Usuário atualizado com sucesso!',
+    };
   }
 
   @Delete('/:id')
   async delete(@Param('id') id: string) {
-    return await this.userService.delete(id);
+    const deletedUser = await this.userService.delete(id);
+    return {
+      user: deletedUser,
+      message: 'Usuário removido com sucesso!',
+    };
   }
 }
