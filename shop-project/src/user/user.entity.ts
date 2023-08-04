@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { OrderEntity } from '../order/order.entity';
 import { ProductEntity } from '../product/product.entity';
 
 @Entity({ name: 'users' })
@@ -37,4 +38,7 @@ export class UserEntity {
     eager: true,
   })
   products: ProductEntity[];
+
+  @OneToMany(() => OrderEntity, (orderEntity) => orderEntity.user)
+  orders: OrderEntity[];
 }
