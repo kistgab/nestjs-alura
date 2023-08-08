@@ -6,9 +6,9 @@ export class ListOrderDTO {
     private readonly id: string,
     private readonly totalValue: number,
     private readonly status: OrderStatus,
-    private readonly user: ListUserDTO,
     private readonly createdAt: string,
     private readonly updatedAt: string,
     private readonly deletedAt: string,
+    private readonly user?: ListUserDTO,
   ) {}
 }

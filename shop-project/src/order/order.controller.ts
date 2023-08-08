@@ -1,15 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { ListOrderDTO } from './dto/list-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrderService } from './order.service';
 
 @Controller('/orders')
@@ -22,25 +13,9 @@ export class OrderController {
   }
 
   @Get()
-  async findAll() {
-    return await this.orderService.findAll();
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.orderService.findOne(+id);
-  }
-
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateOrderDto: UpdateOrderDto,
-  ) {
-    return await this.orderService.update(+id, updateOrderDto);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.orderService.remove(+id);
+  async findAllFromUser(
+    @Query('userId') userId: string,
+  ): Promise<ListOrderDTO[]> {
+    return await this.orderService.findAllFromUser(userId);
   }
 }
