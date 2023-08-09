@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateOrderDTO } from './dto/create-order.dto';
 import { ListOrderDTO } from './dto/list-order.dto';
 import { OrderService } from './order.service';
 
@@ -8,7 +8,7 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  async create(@Body() createOrderDto: CreateOrderDto): Promise<ListOrderDTO> {
+  async create(@Body() createOrderDto: CreateOrderDTO): Promise<ListOrderDTO> {
     return await this.orderService.create(createOrderDto);
   }
 

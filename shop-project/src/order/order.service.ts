@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ListUserDTO } from '../user/dto/list-user.dto';
 import { UserService } from '../user/user.service';
-import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateOrderDTO } from './dto/create-order.dto';
 import { ListOrderDTO } from './dto/list-order.dto';
 import { OrderStatus } from './enum/order-status.enum';
 import { OrderEntity } from './order.entity';
@@ -16,7 +16,7 @@ export class OrderService {
     private readonly userService: UserService,
   ) {}
 
-  async create(createOrderDto: CreateOrderDto): Promise<ListOrderDTO> {
+  async create(createOrderDto: CreateOrderDTO): Promise<ListOrderDTO> {
     const user = await this.userService.findByIdElseThrow(
       createOrderDto.userId,
     );
