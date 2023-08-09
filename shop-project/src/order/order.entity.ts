@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 import { OrderStatus } from './enum/order-status.enum';
-import { OrderItemEntity } from './orderItem.entity';
+import { OrderItemEntity } from './order-item.entity';
 
 @Entity({ name: 'orders' })
 export class OrderEntity {
