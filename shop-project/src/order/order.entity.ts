@@ -4,11 +4,13 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 import { OrderStatus } from './enum/order-status.enum';
+import { OrderItemEntity } from './orderItem.entity';
 
 @Entity({ name: 'orders' })
 export class OrderEntity {
@@ -32,4 +34,10 @@ export class OrderEntity {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: string;
+
+  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.order, {
+    eager: true,
+    cascade: true,
+  })
+  items: OrderItemEntity[];
 }
