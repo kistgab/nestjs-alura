@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Gabirel\",\r\n    \"email\": \"gabriel@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Gabirel\",\r\n    \"email\": \"gabriel2@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -50,13 +50,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{API_URL}}/users/41054ea9-16ad-41c8-b8a0-82d3049fb074",
+							"raw": "{{API_URL}}/users/6bb8d6bf-6eac-46c5-8a5c-4ab7bff1e435",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"users",
-								"41054ea9-16ad-41c8-b8a0-82d3049fb074"
+								"6bb8d6bf-6eac-46c5-8a5c-4ab7bff1e435"
 							]
 						}
 					},
@@ -106,13 +106,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{API_URL}}/users/41054ea9-16ad-41c8-b8a0-82d3049fb074",
+							"raw": "{{API_URL}}/users/a201f1ac-cd04-4bea-b987-dc336e48ec25",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"users",
-								"41054ea9-16ad-41c8-b8a0-82d3049fb074"
+								"a201f1ac-cd04-4bea-b987-dc336e48ec25"
 							]
 						}
 					},
@@ -130,7 +130,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"8a8a46c1-2e62-43db-8fe8-d8d8d687789e\",\r\n    \"name\": \"Figura de ação Marvel Homem Aranha Olympus Homem Aranha E6358 de Hasbro Classic\",\r\n    \"price\": 70.0,\r\n    \"disponibleQuantity\": 10,\r\n    \"description\": \"Produto novo, bem acabado, alegria para colecionadores\",\r\n    \"characteristics\": [\r\n        {\r\n            \"name\": \"Fabricante\",\r\n            \"description\": \"Iron Studios\"\r\n        },\r\n        {\r\n            \"name\": \"material\",\r\n            \"description\": \"Plástico\"\r\n        },\r\n        {\r\n            \"name\": \"material\",\r\n            \"description\": \"Plástico\"\r\n        }\r\n    ],\r\n    \"images\": [\r\n        {\r\n            \"url\": \"https://i.imgur.com/dwDZICq.jpg\",\r\n            \"description\": \"Imagem do Homem Aranha\"\r\n        }\r\n    ],\r\n    \"category\": \"Colecionáveis\"\r\n}",
+							"raw": "{\r\n    \"userId\": \"f0f1d528-9227-4f45-a4c6-9acdfa302821\",\r\n    \"name\": \"Figura de ação Marvel Homem Aranha Olympus Homem Aranha E6358 de Hasbro Classic\",\r\n    \"price\": 70.0,\r\n    \"disponibleQuantity\": 10,\r\n    \"description\": \"Produto novo, bem acabado, alegria para colecionadores\",\r\n    \"characteristics\": [\r\n        {\r\n            \"name\": \"Fabricante\",\r\n            \"description\": \"Iron Studios\"\r\n        },\r\n        {\r\n            \"name\": \"material\",\r\n            \"description\": \"Plástico\"\r\n        },\r\n        {\r\n            \"name\": \"material\",\r\n            \"description\": \"Plástico\"\r\n        }\r\n    ],\r\n    \"images\": [\r\n        {\r\n            \"url\": \"https://i.imgur.com/dwDZICq.jpg\",\r\n            \"description\": \"Imagem do Homem Aranha\"\r\n        }\r\n    ],\r\n    \"category\": \"Colecionáveis\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -164,13 +164,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{API_URL}}/products/18e38521-bd35-4d10-810b-de4e62987de0",
+							"raw": "{{API_URL}}/products/d97b0ec9-5e7a-4a39-8a59-e9a74a024d11",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"products",
-								"18e38521-bd35-4d10-810b-de4e62987de0"
+								"d97b0ec9-5e7a-4a39-8a59-e9a74a024d11"
 							]
 						}
 					},
@@ -220,13 +220,94 @@
 							}
 						},
 						"url": {
-							"raw": "{{API_URL}}/products/18e38521-bd35-4d10-810b-de4e62987de0",
+							"raw": "{{API_URL}}/products/d97b0ec9-5e7a-4a39-8a59-e9a74a024d11",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"products",
-								"18e38521-bd35-4d10-810b-de4e62987de0"
+								"d97b0ec9-5e7a-4a39-8a59-e9a74a024d11"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"f0f1d528-9227-4f45-a4c6-9acdfa302821\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/orders",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"canceled\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/orders/84668e32-2a64-4c2d-a483-a284f82fe92a",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"orders",
+								"84668e32-2a64-4c2d-a483-a284f82fe92a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All from User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/orders?userId=f0f1d528-9227-4f45-a4c6-9acdfa302821",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "f0f1d528-9227-4f45-a4c6-9acdfa302821"
+								}
 							]
 						}
 					},
