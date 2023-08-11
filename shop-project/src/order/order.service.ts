@@ -7,6 +7,7 @@ import { UserService } from '../user/user.service';
 import { CreateOrderDTO } from './dto/create-order.dto';
 import { ListOrderDTO } from './dto/list-order.dto';
 import { OrderItemDTO } from './dto/order-item.dto';
+import { UpdateOrderDTO } from './dto/update-order.dto';
 import { OrderStatus } from './enum/order-status.enum';
 import { OrderItemEntity } from './order-item.entity';
 import { OrderEntity } from './order.entity';
@@ -36,6 +37,17 @@ export class OrderService {
     return orderItem.precoVenda * orderItem.quantity;
   }
 
+  private async findByIdElseThrow(id: string): Promise<OrderEntity> {
+    const foundOrder = await this.orderRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    if (!foundOrder) {
+      throw new Error('Pedido com este ID não encontrado!');
+    }
+    return foundOrder;
+  }
+
   async create(createOrderDto: CreateOrderDTO): Promise<ListOrderDTO> {
     const user = await this.userService.findByIdElseThrow(
       createOrderDto.userId,
@@ -59,9 +71,6 @@ export class OrderService {
       orderEntity.id,
       orderEntity.totalValue,
       orderEntity.status,
-      orderEntity.createdAt,
-      orderEntity.updatedAt,
-      orderEntity.deletedAt,
       new ListUserDTO(orderEntity.user.id, orderEntity.user.name),
     );
     return listOrderDTO;
@@ -71,16 +80,22 @@ export class OrderService {
     const user = await this.userService.findByIdElseThrow(userId);
 
     const userOrdersDto = user.orders?.map(
-      (order) =>
-        new ListOrderDTO(
-          order.id,
-          order.totalValue,
-          order.status,
-          order.createdAt,
-          order.updatedAt,
-          order.deletedAt,
-        ),
+      (order) => new ListOrderDTO(order.id, order.totalValue, order.status),
     );
     return userOrdersDto || [];
+  }
+
+  async update(
+    orderId: string,
+    updateOrderDto: UpdateOrderDTO,
+  ): Promise<ListOrderDTO> {
+    const order = await this.findByIdElseThrow(orderId);
+    order.status = updateOrderDto.status;
+    return new ListOrderDTO(
+      order.id,
+      order.totalValue,
+      order.status,
+      new ListUserDTO(order.user.id, order.user.name),
+    );
   }
 }
