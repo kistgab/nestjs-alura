@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -18,7 +18,7 @@ export class UserService {
       where: { id },
     });
     if (!foundUser) {
-      throw new Error('Usuário com este ID não encontrado!');
+      throw new BadRequestException('Usuário com este ID não encontrado!');
     }
     return foundUser;
   }
