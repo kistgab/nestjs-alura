@@ -1,4 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { ProductEntity } from '../product/product.entity';
 import { OrderEntity } from './order.entity';
 
 @Entity({ name: 'orders_items' })
@@ -17,4 +18,11 @@ export class OrderItemEntity {
     onUpdate: 'CASCADE',
   })
   order: OrderEntity;
+
+  @ManyToOne(() => ProductEntity, (product) => product.orderItems, {
+    eager: true,
+    orphanedRowAction: 'delete',
+    cascade: ['update'],
+  })
+  product: ProductEntity;
 }

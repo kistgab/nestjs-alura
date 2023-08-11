@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { OrderItemEntity } from '../order/order-item.entity';
 import { UserEntity } from '../user/user.entity';
 import { ProductCharacteristicEntity } from './product-characteristic.entity';
 import { ProductImageEntity } from './product-image.entity';
@@ -52,6 +53,11 @@ export class ProductEntity {
     { cascade: true, eager: true },
   )
   images: ProductImageEntity[];
+
+  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product, {
+    orphanedRowAction: 'delete',
+  })
+  orderItems: OrderItemEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;

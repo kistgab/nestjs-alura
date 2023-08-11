@@ -17,7 +17,7 @@ export class ProductService {
     private readonly userService: UserService,
   ) {}
 
-  private async findByIdElseThrow(id: string): Promise<ProductEntity> {
+  async findByIdElseThrow(id: string): Promise<ProductEntity> {
     const foundProduct = await this.productRepository.findOne({
       where: { id },
     });
