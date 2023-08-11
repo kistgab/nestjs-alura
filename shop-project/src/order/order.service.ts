@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ProductEntity } from '../product/product.entity';
 import { ProductService } from '../product/product.service';
 import { ListUserDTO } from '../user/dto/list-user.dto';
 import { UserService } from '../user/user.service';
@@ -21,7 +22,7 @@ export class OrderService {
     private readonly productService: ProductService,
   ) {}
 
-  private async getItemFromOrderItemDto(
+  private async getOrderItemFromOrderItemDTO(
     orderItemDto: OrderItemDTO,
   ): Promise<OrderItemEntity> {
     const orderItemEntity = new OrderItemEntity();
@@ -48,19 +49,50 @@ export class OrderService {
     return foundOrder;
   }
 
+  private validateOrderQuantityHigherThanDisponibleQuantity(
+    orderItem: OrderItemDTO,
+    stockProduct: ProductEntity,
+  ) {
+    if (orderItem.quantity > stockProduct.disponibleQuantity) {
+      throw new BadRequestException(
+        `Você está pedindo a quantidade ${orderItem.quantity} do item ${stockProduct.name}, porém apenas temos disponibilidade para ${stockProduct.disponibleQuantity}`,
+      );
+    }
+  }
+
+  private validateCreateOrderData(
+    createOrderItems: OrderItemDTO[],
+    orderItems: OrderItemEntity[],
+  ) {
+    createOrderItems.forEach((createOrderItem) => {
+      const equivalentItem = orderItems.find(
+        (ordemItem) => ordemItem.product.id === createOrderItem.productId,
+      );
+      if (!equivalentItem) {
+        return;
+      }
+      this.validateOrderQuantityHigherThanDisponibleQuantity(
+        createOrderItem,
+        equivalentItem.product,
+      );
+    });
+  }
+
   async create(createOrderDto: CreateOrderDTO): Promise<ListOrderDTO> {
     const user = await this.userService.findByIdElseThrow(
       createOrderDto.userId,
     );
+    const orderItemsEntity = await Promise.all(
+      createOrderDto.items.map(
+        async (orderItemDto): Promise<OrderItemEntity> =>
+          await this.getOrderItemFromOrderItemDTO(orderItemDto),
+      ),
+    );
+    this.validateCreateOrderData(createOrderDto.items, orderItemsEntity);
     const orderEntity = new OrderEntity();
     orderEntity.status = OrderStatus.IN_PROCESS;
     orderEntity.user = user;
-    orderEntity.items = await Promise.all(
-      createOrderDto.items.map(
-        async (orderItemDto): Promise<OrderItemEntity> =>
-          await this.getItemFromOrderItemDto(orderItemDto),
-      ),
-    );
+    orderEntity.items = orderItemsEntity;
     orderEntity.totalValue = orderEntity.items.reduce(
       (total, orderItem) => total + this.getPriceFromOrderItem(orderItem),
       0,
