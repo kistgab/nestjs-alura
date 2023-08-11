@@ -123,6 +123,7 @@ export class OrderService {
   ): Promise<ListOrderDTO> {
     const order = await this.findByIdElseThrow(orderId);
     order.status = updateOrderDto.status;
+    this.orderRepository.save(order);
     return new ListOrderDTO(
       order.id,
       order.totalValue,
