@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './config/postgres.config.service';
-import { AppExceptionFilter } from './filters/appException.filter';
+import { GlobalExceptionFilter } from './filters/globalException.filter';
 import { OrderModule } from './order/order.module';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
@@ -24,7 +24,7 @@ import { UserModule } from './user/user.module';
   providers: [
     {
       provide: APP_FILTER,
-      useClass: AppExceptionFilter,
+      useClass: GlobalExceptionFilter,
     },
   ],
 })

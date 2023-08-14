@@ -8,7 +8,7 @@ import {
 import { Request, Response } from 'express';
 
 @Catch()
-export class AppExceptionFilter implements ExceptionFilter {
+export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     console.log(exception);
     const context = host.switchToHttp();
