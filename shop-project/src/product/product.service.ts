@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
@@ -22,7 +22,7 @@ export class ProductService {
       where: { id },
     });
     if (!foundProduct) {
-      throw new BadRequestException('Produto com este ID não encontrado!');
+      throw new NotFoundException('Produto com este ID não encontrado!');
     }
     return foundProduct;
   }

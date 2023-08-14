@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductEntity } from '../product/product.entity';
@@ -44,7 +48,7 @@ export class OrderService {
       relations: ['user'],
     });
     if (!foundOrder) {
-      throw new BadRequestException('Pedido com este ID não encontrado!');
+      throw new NotFoundException('Pedido com este ID não encontrado!');
     }
     return foundOrder;
   }
