@@ -39,7 +39,6 @@ export class ProductController {
   @Delete('/:id')
   async delete(@Param('id') id: string) {
     const deletedProduct = await this.productService.delete(id);
-
     return {
       product: deletedProduct,
       message: 'Produto removido com sucesso!',
